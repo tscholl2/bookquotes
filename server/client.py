@@ -24,6 +24,9 @@ class ClientHandler(tornado.websocket.WebSocketHandler):
 	CLIENTS = SafeList()
 	LOCK = threading.Lock()
 
+	def check_origin(self, origin):
+		return True
+
 	def initialize(self,arg):
 		self.name = ''
 		self.ip = self.request.remote_ip
