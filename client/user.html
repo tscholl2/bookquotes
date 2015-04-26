@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Book Quotes</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<!--CUSTOM CODE-->
+	<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+	<script type="text/javascript" src="protocol.js"></script>
+	<script type="text/javascript" src="client.js"></script>
+	<script language="javascript" type="text/javascript">
+	
+		
+	
+	</script>
+	<script language="javascript" type="text/javascript">
+		$( document ).ready(function() {
+			
+			//
+			//GUI
+			//SETUP
+			//
+			
+			$('#connect_screen').show();
+			$('#login_screen').hide();
+			$('#logged_in_screen').hide();
+			$('.menu').hide();
+			$('#menu0').show();
+			ScreenHolder.current = $('#connect_screen');
+			$('#request_output').show();
+			$('#output-wrapper').hide();
+			
+			//
+			//OBJECT
+			//SETUP
+			//
+			
+			ws = null; //websocket
+			log('STATE = not connected')
+			CONNECTED_CLIENTS = [];
+			CURRENT_STATE = not_connected_handler;
+			CURRENT_STATE();
+			
+		});
+	</script>
+</head>
+<body style="text-align:center">
+	<div id='message-wrapper'>
+	</div>
+	<h1 id="title" class="title">Book Quotes</h1>
+	<div id="content" class="content">
+	<div id='screen-wrapper'>
+	
+		<div id='connect_screen'>
+			<div class="input_container" style='width:179px;'>
+				<div class="search_input input-group input-group-sm">
+					<span class="input-group-addon glyphicon glyphicon-globe"></span>
+					<input id="ip_input" class="form-control" type="text" placeHolder="Server IP"></input>
+				</div>
+				<button id="conn_btn" class="btn btn-success btn-lg">Connect</button>
+			</div>
+		</div>
+		 
+		<div id='login_screen'>
+			<div class="input_container" style='width:250px;'>
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon glyphicon glyphicon-user"></span>
+					<input id="un_input" class="form-control" type="text" value="username"/>
+				</div>
+				<br>
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon glyphicon glyphicon-lock"></span>
+					<input id="pwd_input" class="form-control" type="password" value="password"/>
+				</div>
+				<br/>
+				<button id="login_btn"   class="btn btn-success btn-lg">Login</button>
+				<button id="newuser_btn" class="btn btn-success btn-lg">Newuser</button>
+			</div>
+		</div>
+
+		<div id='logged_in_screen'>
+		
+			<!--CHAT WINDOW-->
+		
+			<div id="chat-wrapper" style="padding:5px;">
+				<div id="chat-window">
+					<table id="chat-table" class="table table-striped table-condensed" style='table-layout:fixed; text-align:left;'>
+					<tbody>
+					<tr>
+						<td style='width:70px;'>
+							User:
+						</td>
+						<td>
+							Message
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="chat-input input-group input-group-sm" style="margin:auto;">
+					<input id='message_input'   class='form-control' type='text' placeholder='Enter message...'/>
+					<button id='send_message_button' class="btn btn-primary" style="position:absolute;top:0px;bottom:0px;">
+					<span class="glyphicon glyphicon-send"></span>
+					</button>
+				</div>
+			</div>
+		
+			<!---MENUS-->
+		
+			<div id="request_inputs" class="input_container">
+					<div id='menu-wrapper'>
+					<!--MAIN MENU-->
+					
+					<div id='menu0' class='menu'>
+						<div id='button-wrapper0'>
+							<button id='search' class='btn btn-success btn-lg' onclick='MenuHolder.swap(1);'>Search</button>
+							<button id='submit' class='btn btn-info btn-lg'    onclick='MenuHolder.swap(2);'>Submit</button>
+						</div>
+					</div>
+					
+					<!--SEARCH MENUS-->
+					
+					<div id='menu01' class='menu' style='width:260px'>
+						<div id='button-wrapper01'>
+							<button id='search_books' class='btn btn-success btn-lg' onclick='MenuHolder.swap(1);'>Books</button>
+							<button id='search_posts' class='btn btn-success btn-lg' onclick='MenuHolder.swap(2);'>Quotes</button>
+							<button id='back'         class='btn btn-success btn-lg' onclick='MenuHolder.swap(-1);'>Back</button>
+						</div>
+					</div>
+					
+					<!--BOOK SEARCH MENU-->
+					
+					<div id='menu011' class='menu' style='width:195px;'>
+						<div class="search_input input-group input-group-sm">
+							<span id="sort_book_title_button" class="input-group-addon glyphicon glyphicon-book"></span>
+							<input id='search_book_title'  class='form-control' type='search' placeholder='Title...'/>
+						</div>
+						<div class="search_input input-group input-group-sm">
+							<span id="sort_book_author_button" class="input-group-addon glyphicon glyphicon-user"></span>
+							<input id='search_book_author' class='form-control' type='search' placeholder='Author...'/>
+						</div>
+						<div class="search_input input-group input-group-sm">
+							<span id="sort_book_isbn_button" class="input-group-addon glyphicon glyphicon-barcode"></span>
+							<input id='search_book_isbn'   class='form-control' type='search' placeholder='ISBN...'/>
+						</div>
+						<button id='search_book_btn'  class='btn btn-success btn-lg'>Search</button>
+						<button id='back'             class='btn btn-success btn-lg' onclick='MenuHolder.swap(-1);'>Back</button>
+					</div>
+					
+					<!--QUOTE SEARCH MENU-->
+					
+					
+					<div id='menu012' class='menu' style='width:460px;'>
+						<!--
+{type:#,quotes:[{id:quoteid#,txt:quotetext,bid:bookid,p:page#,un:usersubmitter,d1:afterthisdate,d2:beforethisdate,tags:tag1,tag2,...}]}						
+						-->
+						<div class="container" style="width:inherit;">
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_page_button" class="input-group-addon glyphicon glyphicon-bookmark"></span>
+										<input id='search_quote_p'   class='form-control' type='number' placeholder='Page'/>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_title_button" class="input-group-addon glyphicon glyphicon-book"></span>
+										<input id='search_quote_title'  class='form-control' type='search' placeholder='Title...'/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_author_button" class="input-group-addon glyphicon glyphicon-user"></span>
+										<input id='search_quote_author' class='form-control' type='search' placeholder='Author...'/>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_un_button" class="input-group-addon glyphicon glyphicon-user"></span>
+										<input id='search_quote_un'   class='form-control' type='search' placeholder='Username'/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_d1_button" class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+										<input id='search_quote_d1'   class='form-control' type='date' placeholder='datebefore...'/>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_d2_button" class="input-group-addon glyphicon glyphicon-chevron-left"></span>
+										<input id='search_quote_d2'   class='form-control' type='date' placeholder='dateafter...'/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_txt_button" class="input-group-addon glyphicon glyphicon-pencil"></span>
+										<input id='search_quote_txt'   class='form-control' type='search' placeholder='Content'/>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div class="search_input input-group input-group-sm">
+										<span id="sort_quote_tags_button" class="input-group-addon glyphicon glyphicon-tags"></span>
+										<input id='search_quote_tags'   class='form-control' type='search' placeholder='Tags,...'/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button id='search_quote_btn'  class='btn btn-success btn-lg'>Search</button>
+						<button id='back'  class='btn btn-success btn-lg' onclick='MenuHolder.swap(-1);'>Back</button>
+					</div>
+					
+					<!--SUBMIT MENUS-->
+					
+					<div id='menu02' class='menu'>
+						<button class='btn btn-info btn-lg' id='submit_books' onclick='MenuHolder.swap(1);'>Book</button>
+						<button class='btn btn-info btn-lg' id='submit_posts' onclick='MenuHolder.swap(0,"011");MessageHolder.add("You need to select a book first.","warning")'>Quote</button>
+						<button id='back'  class='btn btn-success btn-lg' onclick='MenuHolder.swap(-1);'>Back</button>
+					</div>
+					
+					<!--BOOK SUBMIT MENU-->
+					
+					<div id='menu021' class='menu' style='width:200px;'>
+						<!--{type:#,t:title,a:author,i:isbn}-->
+						<div class="search_input input-group input-group-sm">
+							<span class="input-group-addon glyphicon glyphicon-book"></span>
+							<input id='submit_book_title'   class='form-control' type='text' placeholder='Title'/>
+						</div>
+						<div class="search_input input-group input-group-sm">
+							<span class="input-group-addon glyphicon glyphicon-user"></span>
+							<input id='submit_book_author'   class='form-control' type='text' placeholder='Author'/>
+						</div>
+						<div class="search_input input-group input-group-sm">
+							<span class="input-group-addon glyphicon glyphicon-barcode"></span>
+							<input id='submit_book_isbn'   class='form-control' type='text' placeholder='ISBN'/>
+						</div>
+						<button id='submit_book_btn'  class='btn btn-info btn-lg'>Submit</button>
+						<button id='back'  class='btn btn-success btn-lg' onclick='MenuHolder.swap(-1);'>Back</button>
+					</div>
+					
+					<!--QUOTE SUBMIT MENU-->
+					
+					<div id='menu022' class='menu' style='width:210px;'>
+						<!--{type:#,txt:quotetext,bid:bookid#,p:page#,tags:[tag1,tag2,...]}-->
+						<div class="search_input input-group input-group-sm">
+							<span class="input-group-addon glyphicon glyphicon-bookmark"></span>
+							<input id='submit_quote_p' class='form-control' type='number' placeholder='Page'/>
+						</div>
+						<div class="search_input input-group">
+							<span class="input-group-addon glyphicon glyphicon-pencil"></span>
+							<textarea id='submit_quote_txt' class='form-control' rows="3" placeholder='Quote'></textarea>
+						</div>
+						<div class="search_input input-group input-group-sm">
+							<span class="input-group-addon glyphicon glyphicon-tags"></span>
+							<input id='submit_quote_tags' class='form-control' type='text' placeholder='tags...'/>
+						</div>
+						<input id='submit_quote_bid' type='hidden'/>
+						<button id='submit_quote_btn'  class='btn btn-info btn-lg'>Submit</button>
+						<button id='back'  class='btn btn-success btn-lg' onclick='MenuHolder.swap(-1);'>Back</button>
+					</div>
+					
+					
+				</div>
+				
+				
+			</div>
+			<br>
+			<div id="output-wrapper">
+				<div id="request_output">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	</div>
+	
+	
+<!--DEBUG TOOLS-->
+<!--
+<button onclick='ScreenHolder.swap($("#logged_in_screen"))'>logged_in_screen</button>
+<button onclick='ScreenHolder.swap($("#login_screen"))'>login_screen</button>
+<button onclick='disconnect()'>disconnect</button>
+<button onclick='MessageHolder.add("message","info")'>msg</button>
+<button onclick='bookCall()'>bookcall</button>
+<button onclick='simulateQuotes()'>quotes</button>
+<button onclick='simMsg()'>chat</button>
+<script>
+
+bookCall = function() {
+	s = '{"r": {"books": [{"a": "J. K. Rowling", "i": "9780590353427", "id": 1, "t": "Harry Potter and the Philosopher\'s Stone"}, {"a": "Aldous Huxley", "i": "0060809833", "id": 2, "t": "Brave New World"}, {"a": "Paul Bacon", "i": "0684833395", "id": 3, "t": "Catch 22"}, {"a": "J. R. R. Tolkien", "i": "9780395071229", "id": 4, "t": "The Hobbit"}, {"a": "J.D. Salinger", "i": "9780316769488", "id": 5, "t": "The Catcher in the Rye"}], "type": 1}, "type": 24}';
+	a = JSON.parse(s);
+	logged_in_handler(a);
+}
+
+simulateQuotes = function() {
+	s ='{"r": {"quotes": [{"d": "2014-07-16 21:19:52", "tags": ["catch22", "tag2"], "b": {"t":"title","a":"author","i":"098123456789"}, "p": 397, "un": "admin", "txt": "This is a quote", "id": 1}, {"d": "2014-07-19 22:55:58", "tags": ["new"], "b": {"t":"title2","a":"author2","i":"0981234567892"}, "p": 101, "un": "username", "txt": "brave quote", "id": 2}, {"d": "2014-07-20 13:20:33", "tags": ["lotr"], "b": {"t":"title3","a":"author3","i":"0981234567893"}, "p": 256, "un": "username", "txt": "The hobbit goes", "id": 3}], "type": 2}, "type": 24} ';
+	a = JSON.parse(s);
+	logged_in_handler(a);
+}
+K = 0;
+simMsg = function() {
+	s = '{"type":17,"msg":"testing'+(K++)+'","by":"admin"}';
+	a = JSON.parse(s);
+	logged_in_handler(a);
+}
+	
+</script>
+-->
+
+
+</div>
+</body>
+</html>

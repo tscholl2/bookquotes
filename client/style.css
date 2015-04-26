@@ -1,0 +1,128 @@
+body {
+	background: #A300FF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	padding-bottom: 50px;
+	padding-top: 5px;
+	text-align: center;
+}
+
+h1.title {
+	font-family: Courier, monospace;
+	font-size:3.5em;
+	font-weight: bold;
+	color: #FFD462;
+	border: 2px solid gold;
+	display: inline-block;
+	border-radius: 15px;
+	padding: 5px;
+}
+
+#content {
+	border: 2px solid gold;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	width: 537px;
+	padding-left: 20px;
+	padding-top: 20px;
+	padding-right: 20px;
+	min-height: 300;
+	background-color: #2626EE;
+	border-radius: 15px;
+	text-align: center;
+}
+
+#screen-wrapper {
+	margin: auto;
+	text-align: center;
+}
+
+#message-wrapper {
+	width:275px;
+	left:5px;
+	position:fixed;
+	z-index: 100;
+	top:5px;
+}
+
+.input_container {
+	display:inline-block;
+	border: 2px solid #006;
+	padding: 8px;
+	background-color: #FFFFFF;
+	border-radius: 15px;
+	color: black;
+}
+
+#chat-window {
+	display:inline-block;
+	border: 2px solid #006;
+	padding: 8px;
+	background-color: #FFFFFF;
+	border-radius: 15px;
+	color: black;
+	height:100px;
+	width:300px;
+	text-align:left;
+	overflow-y:auto;
+}
+
+.btn.glyphicon { // override .glyphicon style if it's set on a .btn
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.428571429;
+}
+.btn.glyphicon::first-letter { // keep the Glyphicon font for the first letter
+    font-family: 'Glyphicons Halflings';
+    line-height: 1;
+	top:0px;
+}
+
+textarea {
+    overflow-y: auto;
+	resize: none;
+}
+
+.menu {
+	cursor:default;
+}
+
+.book-panel-heading {
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
+}
+
+.book-panel-title {
+	cursor:default;
+}
+
+.book-extra-info {
+	line-height:100%;
+}
+
+
+.search_input {
+	padding:5px;
+}
+
+span.glyphicon {
+    top: 0;
+}
+
+#request_output {
+	border: 8px inset #CA1717;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 280px;
+	padding: 2px;
+	background-color: #43DB43;
+	text-align: center;
+	min-height:20px;
+}
